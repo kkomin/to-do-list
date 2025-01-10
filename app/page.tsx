@@ -45,8 +45,7 @@ export default function Home() {
             할 일이 없어요.<br/>TODO를 새롭게 추가해주세요!
             </>
           }
-
-          className="text-slate-400 text-base text-center absolute top-[328px] left-[87px] sm:left-[272px] sm:top-[480px] lg:top-[544px] lg:left-[553px]"
+          className="text-slate-400 text-base text-center absolute w-[201px] h-[36px] top-[328px] left-[87px] sm:left-[272px] sm:top-[480px] lg:top-[544px] lg:left-[553px]"
         />
       </div>
 
@@ -66,7 +65,7 @@ export default function Home() {
             아직 다 한 일이 없어요.<br/>해야 할 일을 체크해보세요!
             </>
           }
-          className="text-slate-400 text-base text-center absolute top-[584px] left-[99px] sm:top-[888px] sm:left-[284px] lg:top-[544px] lg:left-[1178px]"
+          className="text-slate-400 text-base text-center absolute w-[201px] h-[36px] top-[584px] left-[99px] sm:top-[888px] sm:left-[284px] lg:top-[544px] lg:left-[1178px]"
         />
       </div>
 
@@ -86,7 +85,7 @@ export default function Home() {
             아직 다 한 일이 없어요.<br/>해야 할 일을 체크해보세요!
             </>
           }
-          className="text-slate-400 text-base text-center absolute top-[584px] left-[99px] sm:top-[888px] sm:left-[284px] lg:top-[544px] lg:left-[1178px]"
+          className="text-slate-400 text-base text-center absolute w-[201px] h-[36px] top-[584px] left-[99px] sm:top-[888px] sm:left-[284px] lg:top-[544px] lg:left-[1178px]"
         />
       </div>
       {/* <CheckListForm/> */}
