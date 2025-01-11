@@ -8,7 +8,7 @@ export function SearchForm() {
 
     useEffect(() => {
         const updateImgSrc = () => {
-            const isMobile = window.innerWidth <= 640;
+            const isMobile = window.innerWidth <= 425;
             // input에 값이 있을 경우
             if(inputValue.trim()) {
                 setImgSrc(isMobile ? '/btn/plus_purple.png' : '/btn/plus_text_purple.png');

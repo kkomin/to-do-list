@@ -6,7 +6,7 @@ export default function GnbForm() {
     
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 767);
+            setIsMobile(window.innerWidth <= 425);
         };
         window.addEventListener('resize', handleResize);
         handleResize();
