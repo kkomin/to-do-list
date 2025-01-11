@@ -26,7 +26,6 @@ const TextSection = ({ text, className }: textProps) => (
 export default function Home() {
   return (
     <main>
-      <GnbForm />
       <SearchForm />
 
       {/* TO DO 리스트 */}
