@@ -66,10 +66,10 @@ export default function Home() {
           </div>
       </div>
 
-      <div className="flex flex-col mt-[48px] lg:hidden">
+      <div className="flex flex-col mt-[48px] lg:hidden ">
         <ImageSection
             src="/img/done.png"
-            className="w-[97px] h-[36px] ml-[16px] sm:ml-[24px] lg:mt-[120px] lg:ml-[511px]"
+            className="w-[97px] h-[36px] ml-[16px] sm:ml-[24px]"
             />
       </div>
 
