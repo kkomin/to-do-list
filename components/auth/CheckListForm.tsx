@@ -14,8 +14,12 @@ export function CheckListForm({todo} : addListProps) {
 
     // todo 변경 시 doit 동기화 ㄱㄱ
     useEffect(() => {
-        setDoit(todo);
-    }, [todo]);
+        // 기존 doit에 없는 항목만 추가
+        setDoit((prevDoit) => {
+            const newItems = todo.filter((item) => !prevDoit.includes(item) && !done.includes(item));
+            return [...prevDoit, ...newItems];
+        })
+    }, [todo, done]);
 
     // 이벤트 헨들러
     const handleClick = (item:string) => {
