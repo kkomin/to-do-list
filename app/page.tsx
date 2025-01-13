@@ -1,6 +1,7 @@
 "use client"
 import { CheckListForm } from "@/components/auth/CheckListForm";
 import { SearchForm } from "@/components/auth/SearchForm";
+import { addTodo } from "@/lib/api";
 import { ReactNode, useState } from "react";
 
 interface imgProps {
@@ -31,12 +32,38 @@ const TextSection = ({ text, className, isEmpty }: textProps) => {
 };
 
 export default function Home() {
-  const [todo, setAddTodo] = useState<string[]>([]);
+  // const [todo, setAddTodo] = useState<string[]>([]);
+  const [todo, setAddTodo] = useState<{
+    id: number;
+    tenantId: string;
+    name: string;
+    memo: string;
+    imageUrl: string;
+    isCompleted: boolean;
+  }[]>([]);
+  
   const [done, setDoneLength] = useState<number>(0);
 
-  const handleAddTodo = (text:string) => {
-    setAddTodo([...todo, text]);
-  }
+  // Home 컴포넌트에서 handleAddTodo 수정
+  const handleAddTodo = async (text: string) => {
+    const newTodo = { name: text }; // 'name' 속성만 포함
+  
+    try {
+      const tenantId = "kkomin"; // 실제 tenantId
+      const addedTodo = await addTodo(tenantId, newTodo);
+      console.log("API 응답:", addedTodo);
+  
+      // 로컬 상태에 추가
+      setAddTodo([...todo, {
+        id: Date.now(), name: text, isCompleted: false,
+        tenantId: "",
+        memo: "",
+        imageUrl: ""
+      }]);
+    } catch (error) {
+      console.error("할 일 추가 실패:", error);
+    }
+  };
   
   const handleDone = (length:number) => {
     setDoneLength(length);
@@ -73,7 +100,7 @@ export default function Home() {
           <ImageSection src="/img/done.png"
             className="w-[97px] h-[36px]"/>
           <div className="w-[334px] sm:w-[696px] lg:w-[588px]">
-            <CheckListForm todo={todo} doneChange={handleDone}/>
+            {/* <CheckListForm todo={todo} doneChange={handleDone}/> */}
           </div>
           <ImageSection src = "img/done_list.png" 
             className={`w-[120px] h-[120px] ml-[112px] sm:w-[240px] sm:h-[240px] sm:ml-[228px] sm:mt-[24px] ${done > 0 ? "hidden" : ""}`}/>
@@ -115,7 +142,7 @@ export default function Home() {
           <ImageSection src="/img/done.png"
             className="w-[97px] h-[36px] absolute left-[972px]"/>
           <ImageSection src = "img/done_list.png" 
-            className={`w-[240px] h-[240px] mt-[100px] ml-[372px] ${done > 0 ? "hidden" : ""}`}/>
+            className={`w-[240px] h-[240px] mt-[130px] ml-[372px] ${done > 0 ? "hidden" : ""}`}/>
           <TextSection
           text={
             <>
