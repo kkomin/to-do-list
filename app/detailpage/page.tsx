@@ -10,8 +10,8 @@ export default function Detail() {
                 <div className="flex flex-col mt-[17px] sm:mt-[24px] lg:flex-row lg:mt-[24px] lg:gap-[24px]">
                     <div className="w-[343px] h-[311px] border-dashed rounded-[24px] border-[2px] border-slate-300 bg-slate-50 
                         flex flex-col items-center justify-center sm:w-[696px] lg:w-[384px]">
-                            <div className="absolute flex flex-col items-center justify-center w-full h-full">
-                                <img alt="picture_icon" src="/ic/img.png" className="w-[64px] h-[64px]"/>
+                            <div className="absolute flex flex-col items-center justify-center w-[64px] h-[64px]">
+                                <img alt="picture_icon" src="/ic/img.png" className="w-full h-full"/>
                             </div>
                             <button className="w-[64px] h-[64px] ml-auto mr-[16px] mt-auto mb-[16px] bg-no-repeat" 
                                 style={{backgroundImage:"url('/btn/plus_circle.png')", backgroundSize:"contain"}}/>
