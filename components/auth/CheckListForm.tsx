@@ -3,10 +3,11 @@ import { useEffect, useState } from "react";
 
 interface addListProps {
     todo: string[];
+    doneChange: (doneLength: number) => void;
 }
 
 // 클릭 시 변해야 하는 요소 => 1. 배경 color purple-200 .. 2. 체크된 icon으로 .. 3. text에 취소선
-export function CheckListForm({todo} : addListProps) {
+export function CheckListForm({todo, doneChange} : addListProps) {
     // 진행 중
     const [doit, setDoit] = useState<string[]>(todo);
     // 완료
@@ -20,6 +21,11 @@ export function CheckListForm({todo} : addListProps) {
             return [...prevDoit, ...newItems];
         })
     }, [todo, done]);
+
+    // done 생성 시 부모 컴포넌트로 전달
+    useEffect(() => {
+        doneChange(done.length);
+    }, [done]);
 
     // 이벤트 헨들러
     const handleClick = (item:string) => {
@@ -35,7 +41,7 @@ export function CheckListForm({todo} : addListProps) {
     };
 
     return (
-        <div className="flex flex-col ml-[16px] lg:flex-row lg:justify-between gap-8 lg:ml-[360px]">
+        <div className="flex flex-col ml-[16px] gap-8 lg:ml-[360px]">
             {/* todo 리스트 */}
             <div className="flex flex-col">
             {doit.map((item, index) => (
@@ -64,7 +70,7 @@ export function CheckListForm({todo} : addListProps) {
                         key={index}
                         className="w-full h-[50px] flex items-center rounded-[27px] gap-[10px] mt-[16px] 
                                     border-solid border-2 border-slate-900 px-3
-                                    sm:w-[696px] lg:w-[588px] bg-violet-200">
+                                    sm:w-[696px] lg:w-[588px] bg-violet-100">
                         <img
                             src="ic/checkbox.png"
                             className="w-8 h-8 cursor-pointer z-10"

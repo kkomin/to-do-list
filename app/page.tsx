@@ -51,8 +51,12 @@ export default function Home() {
         <div className="mt-[96px] sm:mt-[120px]">
           <ImageSection src="/img/todo.png"
             className="w-[101px] h-[36px]"/>
+            <div className="w-[334px] sm:w-[696px] lg:w-[588px]">
+            <CheckListForm todo={todo} doneChange={handleDone}/>
+            </div>
           <ImageSection src = "img/doit_list.png" 
-            className="w-[120px] h-[120px] ml-[112px] sm:w-[240px] sm:h-[240px] sm:ml-[228px]"/>
+            className={`w-[120px] h-[120px] ml-[112px] sm:w-[240px] sm:h-[240px] sm:ml-[228px]
+              ${todo.length > 0 || done > 0 ? "hidden" : ""}`}/>
           <TextSection
             text= {
               <div>
@@ -61,15 +65,18 @@ export default function Home() {
               </div>
             }
             className="text-slate-400 text-base text-center mt-[16px] ml-[72px] sm:ml-[248px] sm:mt-[24px]"
-            isEmpty={todo.length === 0 && done === 0}/>
+            isEmpty={todo.length === 0}/>
         </div>
 
         {/* Done 그룹 */}
-        <div className="mt-[48px]">
+        <div className="mt-[48px] ">
           <ImageSection src="/img/done.png"
             className="w-[97px] h-[36px]"/>
+          <div className="w-[334px] sm:w-[696px] lg:w-[588px]">
+            <CheckListForm todo={todo} doneChange={handleDone}/>
+          </div>
           <ImageSection src = "img/done_list.png" 
-            className="w-[120px] h-[120px] ml-[112px] sm:w-[240px] sm:h-[240px] sm:ml-[228px] sm:mt-[24px]"/>
+            className={`w-[120px] h-[120px] ml-[112px] sm:w-[240px] sm:h-[240px] sm:ml-[228px] sm:mt-[24px] ${done > 0 ? "hidden" : ""}`}/>
           <TextSection
           text={
             <>
@@ -77,21 +84,21 @@ export default function Home() {
             </>
           }
           className="text-slate-400 text-base text-center ml-[83px] mt-[16px] sm:ml-[260px] sm:mt-[24px]"
-          isEmpty={done === 0 && todo.length === 0}/>
+          isEmpty={done === 0}/>
         </div>
       </div>
 
       {/* 데스크탑에서 보기 */}
-      <div className="flex flex-row lg:block-hidden">
+      <div className="hidden lg:flex lg:flex-row">
         {/* Todo 그룹 */}
-        <div className="mt-[120px]">
+        <div className="mt-[120px] w-full">
           <ImageSection src="/img/todo.png"
             className="w-[101px] h-[36px] ml-[360px]"/>
           <div className="w-[334px] sm:w-[696px] lg:w-[588px]">
-            {/* <CheckListForm todo={todo} doneChange={handleDone}/> */}
+            <CheckListForm todo={todo} doneChange={handleDone}/>
           </div>
           <ImageSection src = "img/doit_list.png" 
-            className="w-[240px] h-[240px] ml-[534px] mt-[64px]"/>
+            className={`w-[240px] h-[240px] ml-[534px] mt-[64px] ${todo.length > 0 || done > 0 ? "hidden" : ""}`}/>
           <TextSection
             text= {
               <div>
@@ -100,26 +107,23 @@ export default function Home() {
               </div>
             }
             className="text-slate-400 text-base text-center mt-[24px] ml-[553px]"
-            isEmpty={todo.length === 0 && done === 0}/>
-        </div>
-        
-        <div className="w-[198px]">
+            isEmpty={todo.length === 0}/>
         </div>
         
         {/* Done 그룹 */}
-        <div className="mt-[120px]">
+        <div className="mt-[120px] w-full">
           <ImageSection src="/img/done.png"
-            className="w-[97px] h-[36px]"/>
+            className="w-[97px] h-[36px] absolute left-[972px]"/>
           <ImageSection src = "img/done_list.png" 
-            className="w-[240px] h-[240px] mt-[64px] ml-[174px]"/>
+            className={`w-[240px] h-[240px] mt-[100px] ml-[372px] ${done > 0 ? "hidden" : ""}`}/>
           <TextSection
           text={
             <>
             아직 다 한 일이 없어요.<br/>해야 할 일을 체크해보세요!
             </>
           }
-          className="text-slate-400 text-base text-center ml-[206px] mt-[24px]"
-          isEmpty={done === 0 && todo.length === 0}/>
+          className="text-slate-400 text-base text-center ml-[404px] mt-[24px]"
+          isEmpty={done === 0}/>
         </div>
       </div>
     </main>
