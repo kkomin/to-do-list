@@ -2,7 +2,7 @@
 import { CheckListForm } from "@/components/auth/CheckListForm";
 import { SearchForm } from "@/components/auth/SearchForm";
 import { addTodo } from "@/lib/api";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 interface imgProps {
   src: string;
@@ -41,30 +41,52 @@ export default function Home() {
     imageUrl: string;
     isCompleted: boolean;
   }[]>([]);
-  
+
   const [done, setDoneLength] = useState<number>(0);
+
+  // 로컬 스토리지에 저장한거 불러오기
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todoList");
+    if (storedTodos) {
+      setAddTodo(JSON.parse(storedTodos));
+    }
+  }, []);
+  
+  // todo 상태가 변경될 때마다 콘솔에 로그 출력 -> 동기적으로 변경
+  useEffect(() => {
+    console.log("업데이트된 로컬 todo:", todo);
+  }, [todo]);
 
   // Home 컴포넌트에서 handleAddTodo 수정
   const handleAddTodo = async (text: string) => {
     const newTodo = { name: text }; // 'name' 속성만 포함
-  
+
     try {
       const tenantId = "kkomin"; // 실제 tenantId
-      const addedTodo = await addTodo(tenantId, newTodo);
+      const addedTodo = await addTodo(newTodo);
       console.log("API 응답:", addedTodo);
-  
-      // 로컬 상태에 추가
-      setAddTodo([...todo, {
-        id: Date.now(), name: text, isCompleted: false,
-        tenantId: "",
-        memo: "",
-        imageUrl: ""
-      }]);
+
+      // 로컬 상태에 추가 (prevTodos를 사용)
+      setAddTodo((prevTodos) => {
+        const updatedTodos = [
+          ...prevTodos,
+          {
+            id: Date.now(),
+            name: text,
+            isCompleted: false,
+            tenantId: "kkomin",
+            memo: "",
+            imageUrl: ""
+          }
+        ];
+        localStorage.setItem("todoList", JSON.stringify(updatedTodos));  // 로컬 스토리지에 저장
+        return updatedTodos;
+    })
     } catch (error) {
       console.error("할 일 추가 실패:", error);
     }
   };
-  
+
   const handleDone = (length:number) => {
     setDoneLength(length);
   }
