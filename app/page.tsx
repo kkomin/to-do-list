@@ -32,36 +32,21 @@ const TextSection = ({ text, className, isEmpty }: textProps) => {
 };
 
 export default function Home() {
-  // const [todo, setAddTodo] = useState<string[]>([]);
-  const [todo, setAddTodo] = useState<{
-    id: number;
-    tenantId: string;
-    name: string;
-    memo: string;
-    imageUrl: string;
-    isCompleted: boolean;
-  }[]>([]);
-
   const [done, setDoneLength] = useState<number>(0);
-
-  // 로컬 스토리지에 저장한거 불러오기
-  useEffect(() => {
+  const [todo, setAddTodo] = useState(() => {
     const storedTodos = localStorage.getItem("todoList");
-    if (storedTodos) {
-      setAddTodo(JSON.parse(storedTodos));
-    }
-  }, []);
+    return storedTodos ? JSON.parse(storedTodos) : []; // 로컬스토리지에 저장된 데이터를 반환
+  });
   
   // Home 컴포넌트에서 handleAddTodo 수정
   const handleAddTodo = async (text: string) => {
     const newTodo = { name: text }; // 'name' 속성만 포함
     try {
-      const tenantId = "kkomin"; // 실제 tenantId
       const addedTodo = await addTodo(newTodo);
       console.log("API 응답:", addedTodo);
 
       // 로컬 상태에 추가 (prevTodos를 사용)
-      setAddTodo((prevTodos) => {
+      setAddTodo((prevTodos: any) => {
         const updatedTodos = [
           ...prevTodos,
           {
@@ -73,8 +58,9 @@ export default function Home() {
             imageUrl: ""
           }
         ];
+        
         localStorage.setItem("todoList", JSON.stringify(updatedTodos));  // 로컬 스토리지에 저장
-        console.log("항목이 수정되었습니다.");
+        console.log("로컬 스토리지에 저장된 항목: ", updatedTodos);
         return updatedTodos;
     })
     } catch (error) {
