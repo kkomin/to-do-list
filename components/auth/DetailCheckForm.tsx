@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Item {
     id: number;
@@ -16,6 +16,11 @@ export function DetailCheckForm({ id, name, isCompleted, imageUrl, memo, setName
     const [localIsCompleted, setLocalIsCompleted] = useState(isCompleted);
     const [isEditing, setIsEditing] = useState(false);
     const [tempName, setTempName] = useState(name);
+    
+    // isCompleted 값에 따라 초기화
+    useEffect(() => {
+        setLocalIsCompleted(isCompleted);
+    }, [isCompleted]);
 
     const handleCheckboxChange = () => {
         const updatedValue = !localIsCompleted;
@@ -47,7 +52,7 @@ export function DetailCheckForm({ id, name, isCompleted, imageUrl, memo, setName
 
     return (
         <div className={`w-[343px] h-[64px] mt-[16px] sm:mt-[24px] lg:mt-[24px] gap-[10px] rounded-[24px] bg-white border-solid border-2 border-slate-900 px-3 flex items-center justify-center
-        sm:w-[696px] lg:w-[996px] ${localIsCompleted ? "bg-violet-300" : "bg-white"}`}>
+        sm:w-[696px] lg:w-[996px] ${localIsCompleted ? "bg-violet-200" : "bg-white"}`}>
             <div className="w-full flex items-center justify-center">
                 <img src={localIsCompleted ? "/ic/checkbox.png" : "/ic/checkbox_empty.png"} className="w-8 h-8" onClick={handleCheckboxChange} />
                 {isEditing ? (

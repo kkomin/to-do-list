@@ -32,39 +32,41 @@ const TextSection = ({ text, className, isEmpty }: textProps) => {
 };
 
 export default function Home() {
+  // const [todo, setAddTodo] = useState<string[]>([]);
+  const [todo, setAddTodo] = useState<{
+    id: number;
+    tenantId: string;
+    name: string;
+    memo: string;
+    imageUrl: string;
+    isCompleted: boolean;
+  }[]>([]);
+
   const [done, setDoneLength] = useState<number>(0);
-  const [todo, setAddTodo] = useState(() => {
-  const storedTodos = localStorage.getItem("todoList");
-    return storedTodos ? JSON.parse(storedTodos) : []; // 로컬스토리지에 저장된 데이터를 반환
-  });
 
-  // const [todo, setAddTodo] = useState<{
-  //   id: number;
-  //   tenantId: string;
-  //   name: string;
-  //   memo: string;
-  //   imageUrl: string;
-  //   isCompleted: boolean;
-  // }[]>([]);
-
-  // // Home 컴포넌트에서 handleAddTodo 수정
-  // useEffect(() => {
-  //   const storedTodos = localStorage.getItem("todoList");
-  //   if (storedTodos) {
-  //     setAddTodo(JSON.parse(storedTodos));
-  //   }
-  // }, []);
-
+  // 로컬 스토리지에 저장한거 불러오기
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todoList");
+    if (storedTodos) {
+      setAddTodo(JSON.parse(storedTodos));
+    }
+  }, []);
+  
+  // todo 상태가 변경될 때마다 콘솔에 로그 출력 -> 동기적으로 변경
+  useEffect(() => {
+    console.log("업데이트된 로컬 todo:", todo);
+  }, [todo]);
 
   // Home 컴포넌트에서 handleAddTodo 수정
   const handleAddTodo = async (text: string) => {
     const newTodo = { name: text }; // 'name' 속성만 포함
+
     try {
       const addedTodo = await addTodo(newTodo);
       console.log("API 응답:", addedTodo);
 
       // 로컬 상태에 추가 (prevTodos를 사용)
-      setAddTodo((prevTodos: any) => {
+      setAddTodo((prevTodos) => {
         const updatedTodos = [
           ...prevTodos,
           {
@@ -82,7 +84,6 @@ export default function Home() {
     })
     } catch (error) {
       console.error("할 일 추가 실패:", error);
-      alert("항목 추가에 실패했습니다.");
     }
   };
 
