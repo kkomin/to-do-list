@@ -52,11 +52,6 @@ export default function Home() {
     }
   }, []);
   
-  // todo 상태가 변경될 때마다 콘솔에 로그 출력 -> 동기적으로 변경
-  useEffect(() => {
-    console.log("업데이트된 로컬 todo:", todo);
-  }, [todo]);
-
   // Home 컴포넌트에서 handleAddTodo 수정
   const handleAddTodo = async (text: string) => {
     const newTodo = { name: text }; // 'name' 속성만 포함
