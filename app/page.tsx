@@ -34,10 +34,28 @@ const TextSection = ({ text, className, isEmpty }: textProps) => {
 export default function Home() {
   const [done, setDoneLength] = useState<number>(0);
   const [todo, setAddTodo] = useState(() => {
-    const storedTodos = localStorage.getItem("todoList");
+  const storedTodos = localStorage.getItem("todoList");
     return storedTodos ? JSON.parse(storedTodos) : []; // 로컬스토리지에 저장된 데이터를 반환
   });
-  
+
+  // const [todo, setAddTodo] = useState<{
+  //   id: number;
+  //   tenantId: string;
+  //   name: string;
+  //   memo: string;
+  //   imageUrl: string;
+  //   isCompleted: boolean;
+  // }[]>([]);
+
+  // // Home 컴포넌트에서 handleAddTodo 수정
+  // useEffect(() => {
+  //   const storedTodos = localStorage.getItem("todoList");
+  //   if (storedTodos) {
+  //     setAddTodo(JSON.parse(storedTodos));
+  //   }
+  // }, []);
+
+
   // Home 컴포넌트에서 handleAddTodo 수정
   const handleAddTodo = async (text: string) => {
     const newTodo = { name: text }; // 'name' 속성만 포함
@@ -58,14 +76,13 @@ export default function Home() {
             imageUrl: ""
           }
         ];
-        
         localStorage.setItem("todoList", JSON.stringify(updatedTodos));  // 로컬 스토리지에 저장
-        console.log("로컬 스토리지에 저장된 항목: ", updatedTodos);
+        console.log("항목이 추가되었습니다.");
         return updatedTodos;
     })
     } catch (error) {
       console.error("할 일 추가 실패:", error);
-      alert("항목 수정에 실패했습니다.");
+      alert("항목 추가에 실패했습니다.");
     }
   };
 

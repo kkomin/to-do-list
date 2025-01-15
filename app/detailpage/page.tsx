@@ -16,115 +16,93 @@ export default function Detail() {
     const [name, setName] = useState<string>(""); // name 상태 추가
     const [items, setItems] = useState<Item[]>([]); // 페이지에서 필요한 item 상태
     const [memo, setMemo] = useState<string>("");
-    const [isCompleted, setIsCompleted] = useState<boolean>(false); // 완료 상태
+    const [isCompleted, setIsCompleted] = useState<boolean | null>(null); // 완료 상태
     
     const getQueryParams = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id');
         const name = urlParams.get('name');
-        return { id, name };
+        const isCompleted = urlParams.get('isCompleted') === 'true';
+        return { id, name, isCompleted };
     }
 
     // 페이지 로드 시, 쿼리 파라미터로 id와 name을 받아와서 API 호출
     useEffect(() => {
-        const { id, name } = getQueryParams();
+        const { id, name, isCompleted } = getQueryParams();
         console.log("Query Params:", id, name);
         console.log(typeof(id));
 
         if (id && name) {
-            const numId = Number(id);
-            setId(numId); // id를 number 형식으로 변환하여 상태에 설정
-            setName(name); // name을 그대로 상태에 설정
+            const numId = Number(id); // id를 number 형식으로 변환
+            setId(numId);
+            setName(name); 
+            setIsCompleted(isCompleted);
+            console.log("item.Completed는", isCompleted);
 
             // 해당 id로 item 데이터 가져오기 (API 호출)
-            const fetchItem = async () => {
-                try {
-                    // getItem 호출 전에 id와 tenantId를 콘솔로 확인
-                    console.log("API 호출 ID:", numId);
+            // const fetchItem = async () => {
+            //     try {
+            //         console.log("API 호출 ID:", numId); // 숫자 ID로 API 호출
+            //         const response = await getItem(numId); // API 호출
+
+            //         // 상태 업데이트
+            //         const item = response.find((item: Item) => item.id === numId);
+
+            //         if (!item) {
+            //             throw new Error("해당 ID의 아이템을 찾을 수 없습니다.");
+            //         }
                     
-                    console.log("API 호출 ID:", numId); // 숫자 ID로 API 호출
-                    const response = await getItem(numId); // API 호출
+            //         // 상태 업데이트
+            //         setItems(item); // 해당 아이템 상태에 저장
+            //         setMemo(item.memo); // 메모 상태 업데이트
+            //         setIsCompleted(item.isCompleted)
+            //         console.log("item.Completed는", item.isCompleted);
 
-                    // 응답이 배열일 경우, id만 추출하여 새로운 배열 만들기
-                    console.log("Fetched Data:", response); // 응답 확인
-                    
-                    // 상태 업데이트
-                    const item = response.find((item: Item) => item.id === numId);
+            //     } catch (error) {
+            //         console.error("아이템을 불러오는 데 실패했습니다.", error);
+            //     }
+            // };
 
-                    if (!item) {
-                        throw new Error("해당 ID의 아이템을 찾을 수 없습니다.");
-                    }
-
-                    console.log("Fetched Item:", item); // 해당 아이템 확인
-
-                    // 상태 업데이트
-                    setItems(item); // 해당 아이템 상태에 저장
-                    setMemo(item.memo); // 메모 상태 업데이트
-                    setIsCompleted(item.isCompleted); // 완료 상태 업데이트
-
-                } catch (error) {
-                    console.error("아이템을 불러오는 데 실패했습니다.", error);
-                }
-            };
-
-            fetchItem(); // API 호출
+            // fetchItem(); // API 호출
         }
-    }, [id, name]);
-    
-    // const handleUpdateItem = async () => {
-    //     if (item) {
-    //         const updatedItemData = {
-    //             name: name, // 새로운 name을 사용
-    //             memo: memo,
-    //             imageUrl: item.imageUrl,
-    //             isCompleted: isCompleted,
-    //         };
+    }, []);
 
-    //         try {
-    //             await updateItem(id, updatedItemData); // API 요청
-    //             alert("항목이 수정되었습니다.");
-    //         } catch (error) {
-    //             alert("항목 수정에 실패했습니다.");
-    //         }
-    //     }
-    // };
-
-    // const handleSave = async () => {
-    //     console.log("저장ㄱㄱ");
-    //     console.log(id)
-    //     if (!item) return;
-
-    //     try {
-    //         await handleUpdateItem(); // API 요청
-    //         window.location.href = "/"; // 홈 페이지로 이동
-    //     } catch (error) {
-    //         console.error("수정 실패:", error);
-    //     }
-    // };
-
-    // const handleDeleteItem = async () => {
-    //     if (!item) return;
-        
-    //     try {
-    //         // deleteItem 함수 호출하여 항목 삭제
-    //         await deleteItem(item.id);
-    //         alert("항목이 삭제되었습니다.");
-    //         window.location.href = "/"; // 홈 페이지로 이동
-    //     } catch (error) {
-    //         console.error("삭제 실패:", error);
-    //         alert("항목 삭제에 실패했습니다.");
-    //     }
-    // };
-
-    const handleNameChange = (newName: string) => {
-        setName(newName); // name 상태를 새로운 이름으로 변경
+    // todo - done 상태 변화
+    const handleStatus = (completed: boolean) => {
+        setIsCompleted(completed); // 상태 업데이트
+        console.log("Updated isCompleted:", completed); // 변경된 상태 확인
     };
 
-    
+    // 할 일 name 상태 변화
+    const handleNameChange = (newName: string) => {
+        setName(newName); // DetailCheckForm에서 전달받은 이름 업데이트
+    };
+
+    // 메모 변화
+    const handleMemoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setMemo(e.target.value); // 메모 상태 업데이트
+    };
+
+    // 수정하기 버튼 클릭 시
+    const handleCompletedChange = async () => {
+        console.log(isCompleted)
+        if (isCompleted === null) return; // 초기 상태인 경우엔 변경하지 않음
+        try {
+            const updatedItem = { name, memo, imageUrl: "", isCompleted: !isCompleted }; // 현재 값과 반대로 업데이트
+            await updateItem(id, updatedItem); // 서버에 업데이트 요청
+
+            setIsCompleted(!isCompleted); // 클라이언트 상태 업데이트
+            // 성공적으로 업데이트된 후, Home 페이지로 돌아가야 하므로, 여기에서 페이지 리다이렉트 처리 가능
+            window.location.href = '/'; // 예시: Home 페이지로 리다이렉트
+        } catch (error) {
+            console.error("서버에 업데이트 실패", error);
+        }
+    };
+
     return (
         <main className="flex items-center justify-center">
             <div className="flex flex-col items-center w-[1200px] h-[1020px] bg-white">
-                <DetailCheckForm id={id} name={name} isCompleted={isCompleted} imageUrl={""} memo={memo} setName={handleNameChange} />
+                <DetailCheckForm id={id} name={name} isCompleted={isCompleted ?? false} imageUrl={""} memo={memo} setName={handleNameChange} isCompletedChange={handleStatus}/>
                 <div className="flex flex-col mt-[17px] sm:mt-[24px] lg:flex-row lg:mt-[24px] lg:gap-[24px]">
 
                     <div className="w-[343px] h-[311px] border-dashed rounded-[24px] border-[2px] border-slate-300 bg-slate-50 
@@ -141,12 +119,12 @@ export default function Detail() {
                         <textarea className="h-[229px] mt-[58px] absolute bg-transparent text-center outline-none w-[calc(100%-32px)]  resize-none overflow-auto" 
                             placeholder="메모 입력"
                             value={memo}
-                            onChange={(e) => setMemo(e.target.value)}/>
+                            onChange={handleMemoChange}/>
                     </div>
                 </div>
                 <div className="relative flex flex-col items-center justify-center lg:left-[325px]">
                     <div className="flex flex-row pt-[24px]">
-                        <button className="w-[168px] h-[56px]" style={{backgroundImage:"url('/btn/m_complete.png')", backgroundSize:"contain"}} />
+                        <button onClick={handleCompletedChange} className="w-[168px] h-[56px]" style={{backgroundImage:"url('/btn/m_complete.png')", backgroundSize:"contain"}} />
                         <button className="w-[168px] h-[56px] ml-[7px]" style={{backgroundImage:"url('/btn/delete.png')", backgroundSize:"contain"}} />
                     </div>
                 </div>

@@ -57,7 +57,6 @@ export const getItem = async (itemId: number) => {
     }
 };
 
-
 // 항목 수정
 export const updateItem = async (itemId: number, updatedTodo: { name: string, memo: string, imageUrl: string, isCompleted: boolean }) => {
     try {

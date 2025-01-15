@@ -9,14 +9,6 @@ export function SearchForm({ onAddTodo } : InputProps) {
     const[inputValue, setInputValue] = useState("");
     const [inputText, setInputText] = useState<string>('');
     
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (inputText.trim()) {
-          onAddTodo(inputText); // 텍스트를 부모 컴포넌트로 전달
-          setInputText(''); // 입력값 초기화
-        }
-    };
-    
     const handleAddTodo = () => {
         if(inputValue.trim()) {
             // 부모 컴포넌트로 값 전달

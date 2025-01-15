@@ -47,6 +47,8 @@ export function CheckListForm({ todo, doneChange }: AddListProps) {
 
       const updatedTodos = [...doit, ...done];
       localStorage.setItem("todoList", JSON.stringify(updatedTodos));
+
+      await updateItem(updatedItem.id, updatedItem);
   
     } catch (error) {
       console.error("아이템 업데이트 실패:", error);
@@ -58,6 +60,9 @@ export function CheckListForm({ todo, doneChange }: AddListProps) {
     useEffect(() => {
       setDoit(todo.filter(item => !item.isCompleted));
       setDone(todo.filter(item => item.isCompleted));
+
+      // todo 상태 변경 시 로컬 스토리지 업데이트
+    localStorage.setItem("todoList", JSON.stringify(todo));
     }, [todo]);
   
     return (
