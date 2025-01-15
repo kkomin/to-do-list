@@ -87,6 +87,21 @@ export default function Detail() {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            await deleteItem(id); // API를 통해 삭제 요청
+
+            // 로컬 스토리지에서 해당 항목 삭제
+            const storedTodos = JSON.parse(localStorage.getItem("todoList") || "[]");
+            const updatedTodos = storedTodos.filter((item: any) => item.id !== id);
+            localStorage.setItem("todoList", JSON.stringify(updatedTodos));
+
+            window.location.href = '/'; // 삭제 후 홈으로 리다이렉트
+        } catch (error) {
+            console.error("삭제 실패:", error);
+        }
+    };
+
     return (
         <main className="flex items-center justify-center">
             <div className="flex flex-col items-center w-[1200px] h-[1020px] bg-white">
@@ -113,7 +128,7 @@ export default function Detail() {
                 <div className="relative flex flex-col items-center justify-center lg:left-[325px]">
                     <div className="flex flex-row pt-[24px]">
                         <button onClick={handleCompletedChange} className="w-[168px] h-[56px]" style={{backgroundImage:"url('/btn/m_complete.png')", backgroundSize:"contain"}} />
-                        <button className="w-[168px] h-[56px] ml-[7px]" style={{backgroundImage:"url('/btn/delete.png')", backgroundSize:"contain"}} />
+                        <button className="w-[168px] h-[56px] ml-[7px]" style={{backgroundImage:"url('/btn/delete.png')", backgroundSize:"contain"}} onClick={handleDelete}/>
                     </div>
                 </div>
             </div>
