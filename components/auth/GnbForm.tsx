@@ -16,7 +16,7 @@ export default function GnbForm() {
     
     const handleLogo = () => {
         console.log('홈으로 가자')
-        window.location.href = './';
+        window.location.href = '/';
     };
 
     return (

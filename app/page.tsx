@@ -60,7 +60,6 @@ export default function Home() {
   // Home 컴포넌트에서 handleAddTodo 수정
   const handleAddTodo = async (text: string) => {
     const newTodo = { name: text }; // 'name' 속성만 포함
-
     try {
       const tenantId = "kkomin"; // 실제 tenantId
       const addedTodo = await addTodo(newTodo);
@@ -71,7 +70,7 @@ export default function Home() {
         const updatedTodos = [
           ...prevTodos,
           {
-            id: Date.now(),
+            id: addedTodo.id,
             name: text,
             isCompleted: false,
             tenantId: "kkomin",
@@ -80,10 +79,12 @@ export default function Home() {
           }
         ];
         localStorage.setItem("todoList", JSON.stringify(updatedTodos));  // 로컬 스토리지에 저장
+        console.log("항목이 수정되었습니다.");
         return updatedTodos;
     })
     } catch (error) {
       console.error("할 일 추가 실패:", error);
+      alert("항목 수정에 실패했습니다.");
     }
   };
 
