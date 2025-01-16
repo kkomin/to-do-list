@@ -90,7 +90,7 @@ export const updateItem = async (itemId: number, updatedTodo: { name: string, me
 export const deleteItem = async (itemId: number) => {
     try {
         // DELETE API 요청
-        const response = await fetch(`/api/${TENANT_ID}/items/${itemId}`, {
+        const response = await fetch(`${BASE_URL}/${TENANT_ID}/items/${itemId}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
@@ -100,12 +100,13 @@ export const deleteItem = async (itemId: number) => {
         // 응답 처리
         if (response.ok) {
             const data = await response.json();
-            alert(data.message); // 응답 메시지 표시
+            return data.message || "삭제되었습니다.";
         } else {
-            throw new Error("삭제에 실패했습니다.");
+            const errorMessage = `삭제 요청 실패 ${response.status} - ${response.statusText}`
+            throw new Error(errorMessage);
         }
-    } catch (error) {
-        console.error("삭제 실패:", error);
-        alert("항목 삭제에 실패했습니다.");
+    } catch (error:any) {
+        console.error("삭제 실패:", error.message);
+        throw error;
     }
 };

@@ -96,9 +96,10 @@ export default function Detail() {
             const updatedTodos = storedTodos.filter((item: any) => item.id !== id);
             localStorage.setItem("todoList", JSON.stringify(updatedTodos));
 
+            alert("항목을 삭제했습니다."); // 성공 메시지
             window.location.href = '/'; // 삭제 후 홈으로 리다이렉트
         } catch (error) {
-            console.error("삭제 실패:", error);
+            console.error("항목 삭제 실패 : ", error);
         }
     };
 
